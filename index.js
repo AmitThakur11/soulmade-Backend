@@ -8,7 +8,7 @@ app.get("/",(req,res)=>{
     res.send("welcome on server")
 })
 app.get("/product",(req,res)=>{
-    res.json(data)
+    res.json({data})
 })
 
 app.listen(port , ()=>`server listening on ${port}`)

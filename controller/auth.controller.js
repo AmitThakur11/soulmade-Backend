@@ -30,14 +30,13 @@ const login =  async(req,res)=>{
             
         }
 
-        const popData =  await user.populate("wishlist cart.productId ")
+        
 
         const token = generateToken({id : user._id});
             return res.status(200).json({
                 success :true,
                 msg  : `${user.username}, welcome back`,
-                token,
-                popData
+                token
 
             })
         

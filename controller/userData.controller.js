@@ -38,16 +38,15 @@ const addToWishlist = async(req,res)=>{
         }
 
         const checkDuplicate = await findUser.wishlist.find(item => item.id == product_id.id)
-        if(checkDuplicate){
-            return getResponse(res,400,"product already exist")
-           
 
+        if(checkDuplicate !== null){
+            return getResponse(res,400,"product already exist")
         }
 
         const findProduct = await Product.findById(product_id.id);
-        console.log(findProduct)
+        
 
-        if(!findProduct && checkDuplicate){
+        if(!findProduct){
             return getResponse(res,400,"product not available")
            
 
@@ -63,13 +62,16 @@ const addToWishlist = async(req,res)=>{
         })
 
 
-        
-    } catch (error) {
+
+    
+    }
+    catch (error) {
         getResponse(res,500,error.msg)
         
     }
 
 }
+
 
 const removeFromWishlist = async(req,res)=>{
     const product = req.params

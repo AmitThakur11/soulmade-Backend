@@ -1,5 +1,4 @@
 const express = require('express');
-const data = require("./data")
 const app = express();
 
 
@@ -8,5 +7,11 @@ app.get("/",(req,res)=>{
     res.send("welcome on server")
 })
 
+app.get("/product",(req,res)=>{
+    res.json({
+        name :"amit",
+        lastname : "thakur"
+    })
+})
 
-app.listen(port , ()=>`server listening on ${port}`)
+app.listen(port ,()=>console.log(`server listening on ${port}`))

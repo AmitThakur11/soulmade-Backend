@@ -74,7 +74,7 @@ const signup = async(req,res)=>{
         await newUser.save((err , docs)=>{
             if(err) throw err ;
             const token = generateToken({id  : docs._id})
-            const populatedData = await user.select("-__password")
+            const populatedData = user.select("-__password")
             res.status(200).json({
                 success :true ,
                 msg : `${username} , you successfully registered` ,

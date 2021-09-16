@@ -13,7 +13,7 @@ const login =  async(req,res)=>{
 
         let user = await User.findOne({email});
         if(!user){
-            return res.status(400).json({
+            return res.status(404).json({
                 success :false, 
                 msg  : "user not exist"
             })
@@ -57,7 +57,7 @@ const signup = async(req,res)=>{
 
         let  user =  await User.findOne({email});
         if(user){
-            return res.status(400).json({
+            return res.status(404).json({
                 msg :"user already registered",
                 success : false
             })

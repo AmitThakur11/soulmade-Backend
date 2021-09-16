@@ -30,7 +30,7 @@ const login =  async(req,res)=>{
             
         }
 
-        const populatedData = await user.populate("wishlist cart.productId address order").select("-__password")
+        const populatedData = await user.select("-password").populate("wishlist cart.productId address order")
         console.log(populatedData)
 
         const token = generateToken({id : user._id});
@@ -74,7 +74,7 @@ const signup = async(req,res)=>{
         await newUser.save((err , docs)=>{
             if(err) throw err ;
             const token = generateToken({id  : docs._id})
-            const populatedData = user.select("-__password")
+            const populatedData = user.select("-password")
             res.status(200).json({
                 success :true ,
                 msg : `${username} , you successfully registered` ,

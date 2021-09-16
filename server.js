@@ -5,7 +5,7 @@ const productRoute = require("./route/product.route")
 const userDataRoute = require("./route/userData.router")
 const dbConnect = require("./dbConnect");
 require('dotenv').config();
-const port = process.env.PORT || 3000 ;
+const port = process.env.PORT || 3001 ;
 
 
 const app = express();

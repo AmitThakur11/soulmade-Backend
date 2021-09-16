@@ -5,6 +5,23 @@ const {extend} = require('lodash')
 const getResponse = require("./utils");
 
 
+const getUser =async(req,res)=>{
+    try{
+        const user = req.user;
+        const findUser = await User.findById(user.id,{password : 0});
+        
+        if(!findUser){
+            return getResponse(res,400,"user not exist")
+        }
+        const userData = await findUser.populate("wishlist cart.productId address order");
+        console.log(userData)
+        getResponse(res,200,"ready to shop",userData)
+    }
+    catch(error){
+        console.log(error.message)
+        getResponse(res,500,error.message)
+    }
+}
 const getWishlist = async(req,res)=>{
     try {
         const user = req.user ;
@@ -17,7 +34,7 @@ const getWishlist = async(req,res)=>{
         getResponse(res,200,"wishlist sucessfully fetched",populateData)
         
     } catch (error) {
-        getResponse(res,500,error.msg)
+        getResponse(res,500,error.message)
         
     }
    
@@ -66,7 +83,7 @@ const addToWishlist = async(req,res)=>{
     
     }
     catch (error) {
-        getResponse(res,500,error.msg)
+        getResponse(res,500,error.message)
         
     }
 
@@ -151,7 +168,7 @@ const addToCart = async (req,res)=>{
         
     } catch (error) {
 
-        getResponse(res,500,error.msg)
+        getResponse(res,500,error.message)
         
     }
 
@@ -183,7 +200,7 @@ const removeFromCart = async(req,res)=>{
         
     } catch (error) {
 
-        getResponse(res,500,error.msg)
+        getResponse(res,500,error.message)
         
     }
 
@@ -263,6 +280,7 @@ const updateAddress = async(req,res)=>{
 
 
 const userAction = {
+    getUser,
     getWishlist,
     addToWishlist,
     removeFromWishlist,

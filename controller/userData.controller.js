@@ -46,7 +46,7 @@ const addToWishlist = async(req,res)=>{
     try {
         const user = req.user ;
         const product_id  = req.params;
-        
+        console.log(product_id)
         const findUser = await User.findById(user.id);
         if(!findUser){
 
@@ -54,9 +54,9 @@ const addToWishlist = async(req,res)=>{
             
         }
 
-        const checkDuplicate = await findUser.wishlist.find(item => item.id == product_id.id)
+        const checkDuplicate = await findUser.wishlist.find(item => item._id == product_id.id)
 
-        if(checkDuplicate !== null){
+        if(checkDuplicate){
             return getResponse(res,400,"product already exist")
         }
 

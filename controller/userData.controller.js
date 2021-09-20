@@ -100,7 +100,7 @@ const removeFromWishlist = async(req,res)=>{
             return getResponse(res,400,"user not exist")
         }
 
-        const findProduct = await findUser.wishlist.find(item => item.productId == product._id)
+        const findProduct = await findUser.wishlist.find(item => item._id == product._id)
 
         
         if(!findProduct){

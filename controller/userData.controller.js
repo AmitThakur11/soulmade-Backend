@@ -144,9 +144,6 @@ const addToCart = async (req,res)=>{
         const checkDuplicate =  await findUser.cart.find(product => product.productId == productId.id )
         
         if(checkDuplicate){
-            
-            
-            console.log(product)
             const newProduct = extend(checkDuplicate , updateProduct)
             await findUser.save()
             const updateCart = await findUser.populate('cart.productId')

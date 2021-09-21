@@ -18,7 +18,7 @@ router.route("/cart/:product_id")
 .post(userAction.addToCart)
 .delete(userAction.removeFromCart)
 
-router.post("/cart/:product_id/increment" , userAction.incrementQty)
+router.post("/cart/:product_id/update_qty" , userAction.incrementQty)
 
 router.param("/address_id", eval_param.address_param)
 

@@ -14,7 +14,7 @@ const getUser =async(req,res)=>{
             return getResponse(res,400,"user not exist")
         }
         const userData = await findUser.populate("wishlist cart.productId address order");
-        console.log(userData)
+        
         getResponse(res,200,"ready to shop",userData)
     }
     catch(error){
@@ -92,6 +92,7 @@ const addToWishlist = async(req,res)=>{
 
 const removeFromWishlist = async(req,res)=>{
     const product = req.params
+    console.log(product)
     const user = req.user ;
     try {
 
@@ -100,7 +101,9 @@ const removeFromWishlist = async(req,res)=>{
             return getResponse(res,400,"user not exist")
         }
 
-        const findProduct = await findUser.wishlist.find(item => item._id == product._id)
+
+        const findProduct = await findUser.wishlist.find(item => item._id == product.id)
+        console.log(findProduct)
 
         
         if(!findProduct){
@@ -117,7 +120,7 @@ const removeFromWishlist = async(req,res)=>{
 
         
     } catch (error) {
-
+        getResponse(res,500,error.message)
         
     }
 

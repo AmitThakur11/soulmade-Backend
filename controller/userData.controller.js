@@ -114,8 +114,11 @@ const removeFromWishlist = async(req,res)=>{
             })
         }
         await findUser.wishlist.pull({ _id: findProduct._id });
+
         await findUser.save();
-        return getResponse(res,200,"successfully removed", findUser.wishlist)
+        const popData = await findUser.populate("wishlist");
+        console.log(popData)
+        return getResponse(res,200,"successfully removed", popData)
 
 
         

@@ -210,6 +210,45 @@ const removeFromCart = async(req,res)=>{
 }
 
 
+const incrementQty = async(req,res)=>{
+    try{
+
+        const productId = req.params;
+        const user = req.user;
+        const {payload} = req.body
+
+        let findUser = await User.findById(user.id);
+        if(!findUser){
+            return getResponse(res,400,"user not exist")
+        }
+        const findProduct = await Product.findById(productId.id);
+        if(!findProduct){
+            return getResponse(res,400,"product not exist")
+        }
+        console.log(payload)
+
+        let cartProduct = await findUser.cart.find(product => product.productId == productId.id);
+        var updateProduct 
+        if(payload == "increment"){
+             updateProduct = {...cartProduct,qty : cartProduct.qty + 1}
+        }
+        if(payload == "decrement"){
+            updateProduct = {...cartProduct,qty : cartProduct.qty - 1}
+        }
+        
+        cartProduct = extend(cartProduct,updateProduct);
+        await findUser.save();
+        getResponse(res,200,"qty updated" , findUser)
+
+
+
+
+    }catch(err){
+        getResponse(res,500,err.message)
+    }
+}
+
+
 const addAddress = async(req,res)=>{
     try {
         const user = req.user;
@@ -288,6 +327,7 @@ const userAction = {
     removeFromWishlist,
     addToCart,
     removeFromCart,
+    incrementQty,
     addAddress,
     removeAddress,
     updateAddress,

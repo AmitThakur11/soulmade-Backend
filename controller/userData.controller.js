@@ -113,9 +113,9 @@ const removeFromWishlist = async(req,res)=>{
                 msg :"product unavailable"
             })
         }
-        findUser.wishlist.pull({ _id: findProduct._id });
+        await findUser.wishlist.pull({ _id: findProduct._id });
         await findUser.save();
-        return res.status(200).json({ wishlist: findUser.wishist, success: true, message: "Successfully removed" });
+        return getResponse(res,200,"successfully removed", findUser.wishlist)
 
 
         

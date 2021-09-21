@@ -195,7 +195,7 @@ const removeFromCart = async(req,res)=>{
         console.log(cartProduct)
         await findUser.cart.pull(cartProduct._id)
         await findUser.save()
-        const populateData = await findUser.populate('cart.prouctId')
+        const populateData = await findUser.populate('cart.productId')
         getResponse(res,200,"product removed" , populateData)
 
 

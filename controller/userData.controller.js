@@ -238,7 +238,8 @@ const incrementQty = async(req,res)=>{
         
         cartProduct = extend(cartProduct,updateProduct);
         await findUser.save();
-        getResponse(res,200,"qty updated" , findUser)
+        const populatedData = await findUser.populate("cart.productId");
+        getResponse(res,200,"qty updated" , populatedData.cart)
 
 
 

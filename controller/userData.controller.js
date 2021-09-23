@@ -259,7 +259,7 @@ const addAddress = async(req,res)=>{
     
     await findUser.address.push(address);
     await findUser.save();
-    getResponse(res,200,"address added", findUser)
+    getResponse(res,200,"address added", findUser.address)
     
     } catch (error) {
         getResponse(res,500,error.message)

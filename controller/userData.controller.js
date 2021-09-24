@@ -335,7 +335,7 @@ const updateAddress = async(req,res)=>{
     const updateAddress = extend(findAddress,newAddress);
     console.log(updateAddress)
     await findUser.save()
-    getResponse(res,200,"address updated successfully",findAddress)
+    getResponse(res,200,"address updated successfully",findUser)
         
     }catch(error) {
         getResponse(res,500,error.message)

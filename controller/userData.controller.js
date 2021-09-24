@@ -146,6 +146,7 @@ const addToCart = async (req,res)=>{
         }        
         const findProduct = await Product.findById(productId.id);
         
+        
         const checkDuplicate =  await findUser.cart.find(product => product.productId == productId.id )
         
         if(checkDuplicate){
@@ -175,6 +176,35 @@ const addToCart = async (req,res)=>{
     }
 
 }
+
+const updateCart = async(req,res)=>{
+    try{
+    const user = req.user;
+    let {updatedProduct} = req.body
+    const findUser = await User.findById(user.id);
+    if(!findUser){
+        return getResponse(res,401,"user no found")
+    }
+
+    updatedProduct = new Product();
+
+    const updateCart = extend(findUser.cart , updatedCart);
+    console.log(updateCart)
+    await findUser.save((err,docs)=>{
+        if(err) throw err
+        getResponse(res,200,"Cart updated",docs.cart)
+    });
+    }
+    catch(error){
+        getResponse(res,500,error.message)
+
+    }
+    
+
+}
+
+
+
 
 const removeFromCart = async(req,res)=>{
     try {
@@ -307,15 +337,12 @@ const updateAddress = async(req,res)=>{
     await findUser.save()
     getResponse(res,200,"address updated successfully",findAddress)
         
-    } catch (error) {
+    }catch(error) {
         getResponse(res,500,error.message)
         
     }
 
 }
-
-
-
 
 
 const userAction = {
@@ -325,6 +352,7 @@ const userAction = {
     removeFromWishlist,
     addToCart,
     removeFromCart,
+    updateCart,
     incrementQty,
     addAddress,
     removeAddress,

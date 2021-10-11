@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Product = require('./product.model');
 
 
 const userSchema = new mongoose.Schema({
@@ -19,21 +20,53 @@ const userSchema = new mongoose.Schema({
          { type: mongoose.Schema.Types.ObjectId, ref: 'Product' }
   
     ],
-    address : [
-        {
-            _id: {type : mongoose.Schema.Types.ObjectId,ref : 'Address'},
-        }
-    ],
     cart:[
         {
         productId: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' }, 
         qty: Number
       }
     ],
-    order :[
-        { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
+    order :[{
+        orderedProduct : [{
+            type : mongoose.Schema.Types.ObjectId,
+            ref : 'Product'
 
-    
+        }],
+        address : {
+            name : {
+                type : String,
+                required : true
+            },
+            phoneNo :  {
+                type:String,
+                requird: true
+            },
+            appartment : {
+                type: String,
+                required : true
+        
+            },
+            city : {
+                type : String,
+                required : true,
+            },
+            state : {
+                type : String ,
+                required : true
+            },
+            postalCode : {
+                type : Number,
+                required : true
+            },
+            isDefault :{
+                type :  Boolean,
+                default: false
+
+            }
+        
+        }
+
+    }
     ],
     address : 
         [{

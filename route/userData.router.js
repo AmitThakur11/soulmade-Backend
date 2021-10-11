@@ -31,5 +31,8 @@ router.route("/address/:address_id")
 .delete(userAction.removeAddress)
 
 
+router.post("/order/add",userAction.addOrder)
+
+
 
 module.exports = router;

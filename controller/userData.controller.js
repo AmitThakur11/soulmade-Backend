@@ -344,6 +344,28 @@ const updateAddress = async(req,res)=>{
 
 }
 
+const addOrder = async(req,res)=>{
+    try{
+        const user = req.user 
+        const newOrder = req.body
+        const findUser = await User.findById(user.id);
+        
+        if(!findUser){
+            return getResponse(res,400,"user not exist")
+        }
+
+        await findUser.order.unshift(newOrder);
+        await findUser.save((err,docs)=>{
+            if(err)throw err;
+            getResponse(res,200,"Order updated",docs)
+        })
+
+        
+    }catch(err){
+        getResponse(res,500,err.message)
+
+    }
+}
 
 const userAction = {
     getUser,
@@ -357,6 +379,7 @@ const userAction = {
     addAddress,
     removeAddress,
     updateAddress,
+    addOrder
 
 
 }

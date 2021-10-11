@@ -13,7 +13,7 @@ const getUser =async(req,res)=>{
         if(!findUser){
             return getResponse(res,400,"user not exist")
         }
-        const userData = await findUser.populate("wishlist cart.productId address order");
+        const userData = await findUser.populate("wishlist cart.productId address order.orderedProduct");
         
         getResponse(res,200,"ready to shop",userData)
     }

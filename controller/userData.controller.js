@@ -355,9 +355,10 @@ const addOrder = async(req,res)=>{
         }
 
         await findUser.order.unshift({orderedProduct : orderedProduct , address : address});
-        await findUser.save((err,docs)=>{
+        await findUser.save(async (err,docs)=>{
             if(err)throw err;
-            getResponse(res,200,"Order updated",docs)
+            const populatedData = await docs.populate("order.orderedProduct")
+            getResponse(res,200,"Order updated",populatedData.order)
         })
 
         

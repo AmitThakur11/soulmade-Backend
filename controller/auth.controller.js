@@ -30,7 +30,7 @@ const login =  async(req,res)=>{
             
         }
 
-        const populatedData = await User.find({email}, {password:0}).populate("wishlist cart.productId address order")
+        const populatedData = await User.find({email}, {password:0}).populate("wishlist cart.productId address order.orderedProduct")
         console.log(populatedData)
 
         const token = generateToken({id : user._id});

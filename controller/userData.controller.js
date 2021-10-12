@@ -349,12 +349,11 @@ const addOrder = async(req,res)=>{
         const user = req.user 
         const {orderedProduct, address} = req.body
         const findUser = await User.findById(user.id);
-        
         if(!findUser){
             return getResponse(res,400,"user not exist")
         }
 
-        await findUser.order.unshift({orderedProduct : orderedProduct , address : address});
+        await findUser.order.unshift({orderedProduct : [...orderedProduct] , address : address});
         await findUser.save(async (err,docs)=>{
             if(err)throw err;
             const populatedData = await docs.populate("order.orderedProduct")
@@ -368,6 +367,35 @@ const addOrder = async(req,res)=>{
     }
 }
 
+const cancelOrder = async(req,res)=>{
+    try{
+        const user = req.user
+        const orderId = req.orderId
+        const findUser = await User.findById(user.id);
+        
+        if(!findUser){
+            return getResponse(res,400,"user not exist")
+        }
+        const findOrder = await findUser.order.find(({_id})=>_id.toHexString() === orderId)
+        if(!findOrder){
+            return getResponse(res,400,"order not available")
+        }
+        await findUser.order.pull({_id : orderId});
+        await findUser.save((err,docs)=>{
+            if(err) throw err
+            getResponse(res,200,"order canceled",docs.order)
+
+        })
+        
+        
+
+    }catch(err){
+        getResponse(res,500,err.message)
+    }
+}
+
+
+
 const userAction = {
     getUser,
     getWishlist,
@@ -380,7 +408,8 @@ const userAction = {
     addAddress,
     removeAddress,
     updateAddress,
-    addOrder
+    addOrder,
+    cancelOrder
 
 
 }

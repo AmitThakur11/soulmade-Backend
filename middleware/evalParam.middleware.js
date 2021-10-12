@@ -31,15 +31,26 @@ const address_param = async(req,res,next,id)=>{
  
  })   
  }
-    
-     
-     
  }
 
+ const orderParam = async(req,res,next,id)=>{
+     try{
+         
+         req.orderId = id
+         next()
+
+     }catch(err){
+         res.status(400).json({
+             success : false ,
+             msg : err.message
+         })
+     }
+ }
 
 const eval_param = {
     product_param,
-    address_param
+    address_param,
+    orderParam
 }
 
 

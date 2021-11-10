@@ -177,22 +177,18 @@ const addToCart = async (req,res)=>{
 
 }
 
-const updateCart = async(req,res)=>{
+const removeCart = async(req,res)=>{
     try{
     const user = req.user;
-    let {updatedProduct} = req.body
     const findUser = await User.findById(user.id);
     if(!findUser){
         return getResponse(res,401,"user no found")
     }
 
-    updatedProduct = new Product();
-
-    const updateCart = extend(findUser.cart , updatedCart);
-    console.log(updateCart)
+    findUser.cart =[]
     await findUser.save((err,docs)=>{
         if(err) throw err
-        getResponse(res,200,"Cart updated",docs.cart)
+        getResponse(res,200,"Cart cleared",docs.cart)
     });
     }
     catch(error){
@@ -384,7 +380,7 @@ const cancelOrder = async(req,res)=>{
         await findUser.save(async(err,docs)=>{
             if(err) throw err
             const userData = await findUser.populate("order.orderedProduct");
-            getResponse(res,200,"order canceled", userData.order);
+            getResponse(res,200,"order canceled", userData);
 
         })
         
@@ -404,7 +400,7 @@ const userAction = {
     removeFromWishlist,
     addToCart,
     removeFromCart,
-    updateCart,
+    removeCart,
     incrementQty,
     addAddress,
     removeAddress,

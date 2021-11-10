@@ -381,9 +381,10 @@ const cancelOrder = async(req,res)=>{
             return getResponse(res,400,"order not available")
         }
         await findUser.order.pull({_id : orderId});
-        await findUser.save((err,docs)=>{
+        await findUser.save(async(err,docs)=>{
             if(err) throw err
-            getResponse(res,200,"order canceled",docs.order)
+            const userData = await findUser.populate("order.orderedProduct");
+            getResponse(res,200,"order canceled", userData.order);
 
         })
         

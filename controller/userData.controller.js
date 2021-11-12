@@ -350,6 +350,7 @@ const addOrder = async(req,res)=>{
         }
 
         await findUser.order.unshift({orderedProduct : [...orderedProduct] , address : address});
+        findUser.cart = []
         await findUser.save(async (err,docs)=>{
             if(err)throw err;
             const populatedData = await docs.populate("order.orderedProduct")

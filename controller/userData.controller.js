@@ -70,11 +70,11 @@ const addToWishlist = async(req,res)=>{
         }
         
         findUser.wishlist.push({_id : findProduct.id});
-        const popdata = await findUser.populate('wishlist')
+        const {wishlist} = await findUser.populate('wishlist')
 
         await findUser.save((err,docs)=>{
             if(err)throw err ;
-            return getResponse(res,200,"product added", popdata)
+            return getResponse(res,200,"product added",{wishlist : wishlist})
 
         })
 
@@ -115,9 +115,9 @@ const removeFromWishlist = async(req,res)=>{
         }
         await findUser.wishlist.pull({ _id: findProduct._id });
         await findUser.save();
-        const popData = await findUser.populate("wishlist");
-        console.log(popData)
-        return getResponse(res,200,"successfully removed", popData.wishlist)
+        const {wishlist} = await findUser.populate("wishlist");
+        
+        return getResponse(res,200,"successfully removed",{wishlist : wishlist})
 
 
         

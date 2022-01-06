@@ -8,12 +8,12 @@ const getProduct = async(req,res)=>{
         if(!product){
             return res.status(400).json({
                 success : false , 
-                msg : "no products available right now"
+                msg : "No products available right now"
             })
         }
         res.status(200).json({
             success : true,
-            msg :"data fetched successfully",
+            msg :"Data fetched successfully",
             product
 
         })
@@ -35,7 +35,7 @@ const addProduct = async(req,res)=>{
             if(err) throw err ;
             res.status(200).json({
                 success : true,
-                msg :"product added"
+                msg :"Product added"
             })
         })
         

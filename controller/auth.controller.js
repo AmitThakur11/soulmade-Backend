@@ -15,7 +15,7 @@ const login =  async(req,res)=>{
         if(!user){
             return res.status(404).json({
                 success :false, 
-                msg  : "user not exist"
+                msg  : "User not exist"
             })
         }
         const passVerify = await bcrypt.compare(password  , user.password);
@@ -23,7 +23,7 @@ const login =  async(req,res)=>{
 
             return res.status(401).json({
                 success :false ,
-                msg  : "password incorrect",
+                msg  : "Incorrect password",
 
 
             })
@@ -58,7 +58,7 @@ const signup = async(req,res)=>{
         let  user =  await User.findOne({email});
         if(user){
             return res.status(404).json({
-                msg :"user already registered",
+                msg :"User already registered",
                 success : false
             })
         }
@@ -94,16 +94,6 @@ const signup = async(req,res)=>{
         })
         
     }
-
-
-
-
-
-
-    // res.status(200).json({
-    //     success :"register successfully",
-    //     user : req.body
-    // })
 
 }
 

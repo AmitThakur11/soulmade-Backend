@@ -97,7 +97,7 @@ const signup = async(req,res)=>{
 
 }
 
-const generateToken =(payload)=>jwt.sign(payload , process.env.JWT_SECRET , {expiresIn : "1d"});
+const generateToken =(payload)=>jwt.sign(payload , process.env.JWT_SECRET , {expiresIn : "7d"});
 
 
 const AuthActions = {

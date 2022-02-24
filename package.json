@@ -17,7 +17,9 @@
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.21",
     "mongoose": "^6.0.5",
-    "nodemon": "^2.0.12"
+    "nodemon": "^2.0.12",
+    "razorpay": "^2.8.0",
+    "shortid": "^2.2.16"
   },
   "engines": {
     "node": "v12.22.6"

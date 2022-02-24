@@ -7,8 +7,8 @@ const { extend } = require("lodash");
 const getResponse = require("./utils");
 
 var instance = new razorpay({
-  key_id: process.env.KEY_ID,
-  key_secret: process.env.KEY_SECRET,
+  key_id: "rzp_test_vZaorXyCcQmPq5",
+  key_secret: "hIGJKSQL9UZlapkdUp2QKdqO",
 });
 
 const getUser = async (req, res) => {

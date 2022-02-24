@@ -30,17 +30,16 @@ const login =  async(req,res)=>{
             
         }
 // "wishlist cart.productId address order.orderedProduct"
+console.log(user)
         const populatedData = await User.find({email}, {password:0}).populate([
             {
                 path : "wishlist"
             },{
-                path : "cart" , populate : {path : productId}
+                path : "cart"
             },{
                 path : "address"
             },{
-                path : "order" , populate : {
-                    path : orderedProducts
-                }
+                path : "order"
             }
         ])
         console.log(populatedData)

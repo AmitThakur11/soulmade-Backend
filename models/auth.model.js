@@ -27,11 +27,16 @@ const userSchema = new mongoose.Schema({
       }
     ],
     order :[{
-        orderedProduct : [{
+        _id : String,
+        orderedProducts : [{
+            product : {
             type : mongoose.Schema.Types.ObjectId,
             ref : 'Product'
+            },
+            qty : Number
 
         }],
+        total : Number ,
         address : {
             name : {
                 type : String,
@@ -57,13 +62,7 @@ const userSchema = new mongoose.Schema({
             postalCode : {
                 type : Number,
                 required : true
-            },
-            isDefault :{
-                type :  Boolean,
-                default: false
-
             }
-        
         }
 
     }

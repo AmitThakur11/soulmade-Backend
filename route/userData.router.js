@@ -34,7 +34,7 @@ router.route("/address/:address_id")
 router.param("order_id",eval_param.orderParam )
 
 
-router.post("/order/add",userAction.addOrder)
+router.post("/order/add",userAction.createOrder)
 router.delete("/order/:order_id/cancel", userAction.cancelOrder)
 
 

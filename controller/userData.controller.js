@@ -26,9 +26,7 @@ const getWishlist = async(req,res)=>{
     try {
         const user = req.user ;
         const findUser = await User.findById(user.id);
-        // if(!findUser){
-        //     return getResponse(res,400,"User not exist")
-        // }
+
             
         const populateData = await findUser.populate("wishlist");
         getResponse(res,200,"Wishlist successfully fetched",populateData)
@@ -48,11 +46,7 @@ const addToWishlist = async(req,res)=>{
         const product_id  = req.params;
        
         const findUser = await User.findById(user.id);
-        // if(!findUser){
-
-        //     return getResponse(res,400,"User not exist")
-            
-        // }
+ 
 
         const checkDuplicate = await findUser.wishlist.find(item => item._id == product_id.id)
 
@@ -63,11 +57,6 @@ const addToWishlist = async(req,res)=>{
         const findProduct = await Product.findById(product_id.id);
         
 
-        // if(!findProduct){
-        //     return getResponse(res,400,"product not available")
-           
-
-        // }
         
         findUser.wishlist.push({_id : findProduct.id});
         const {wishlist} = await findUser.populate('wishlist')
@@ -97,19 +86,10 @@ const removeFromWishlist = async(req,res)=>{
     try {
 
         const findUser = await User.findById(user.id);
-        // if(!findUser){
-        //     return getResponse(res,400,"user not exist")
-        // }
+     
 
 
         const findProduct = await findUser.wishlist.find(item => item._id == product.id)        
-        // if(!findProduct){
-
-        //     return res.status(400).json({
-        //         success :false,
-        //         msg :"Product unavailable"
-        //     })
-        // }
         await findUser.wishlist.pull({ _id: findProduct._id });
         await findUser.save();
         const {wishlist} = await findUser.populate("wishlist");
@@ -133,14 +113,8 @@ const addToCart = async (req,res)=>{
         const user = req.user;
         const updateProduct = req.body
         
-        
-        // res.json({product , id : user.id});
-
         const findUser = await User.findById(user.id);
-        // if(!findUser){
-        //     return getResponse(res,400,"user not exist")
-
-        // }        
+                
         const findProduct = await Product.findById(productId.id);
         
         
@@ -178,10 +152,7 @@ const removeCart = async(req,res)=>{
     try{
     const user = req.user;
     const findUser = await User.findById(user.id);
-    // if(!findUser){
-    //     return getResponse(res,401,"user no found")
-    // }
-
+ 
     findUser.cart =[]
     await findUser.save((err,docs)=>{
         if(err) throw err
@@ -205,14 +176,7 @@ const removeFromCart = async(req,res)=>{
         const user = req.user;
 
         const findUser = await User.findById(user.id);
-        // if(!findUser){
-        //     return getResponse(res,400,"user not exist")
-        // }
-        // const findProduct = await Product.findById(productId.id);
-        // if(!findProduct){
-        //     return getResponse(res,400,"user not exist")
-        // }
-
+       
 
         const cartProduct = await findUser.cart.find(product => product.productId == productId.id);
         await findUser.cart.pull(cartProduct._id)
@@ -240,13 +204,7 @@ const incrementQty = async(req,res)=>{
         const {payload} = req.body
 
         let findUser = await User.findById(user.id);
-        // if(!findUser){
-        //     return getResponse(res,400,"user not exist")
-        // }
-        // const findProduct = await Product.findById(productId.id);
-        // if(!findProduct){
-        //     return getResponse(res,400,"product not exist")
-        // }
+       
    
 
         let cartProduct = await findUser.cart.find(product => product.productId == productId.id);
@@ -271,15 +229,15 @@ const incrementQty = async(req,res)=>{
 
 const addAddress = async(req,res)=>{
     try {
-        const user = req.user;
+    const user = req.user;
     const {address} = req.body;
     
     const findUser = await User.findById(user.id);
-    // if(!findUser){
-    //     return getResponse(res,400,"user not exist")
-    // }
-    
-    await findUser.address.push(address);
+    const previousDefault = findUser.address.findIndex(({isDefault})=> isDefault === true)
+    if(previousDefault){
+        findUser.address[previousDefault].isDefault = false ;
+    }
+    await findUser.address.push({...address,isDefault : true});
     await findUser.save();
     getResponse(res,200,"Address added", findUser.address)
     
@@ -289,15 +247,16 @@ const addAddress = async(req,res)=>{
     }
 }
 
+const defaultAddress = ()=>{
+
+}
+
 const removeAddress = async(req,res)=>{
     const user = req.user
     const {address_id} = req.params;
 
     const findUser = await User.findById(user.id);
-    // if(!findUser){
-    //     return getResponse(res,400,"user not exist")
-    // }
-
+   
     const findAddress = await findUser.address.find(address => address.id === address_id);
     if(!findAddress){
         return getResponse(res,400,"Address not exist")
@@ -309,15 +268,13 @@ const removeAddress = async(req,res)=>{
 }
 const updateAddress = async(req,res)=>{
     try {
-        const user = req.user
+    const user = req.user
     const {address_id} = req.params;
     const {newAddress} = req.body
 
 
     const findUser = await User.findById(user.id);
-    // if(!findUser){
-    //     return getResponse(res,400,"user not exist")
-    // }
+   
     const findAddress = await findUser.address.find(address => address.id === address_id);
 
     if(!findAddress){
@@ -336,22 +293,23 @@ const updateAddress = async(req,res)=>{
 
 }
 
-const addOrder = async(req,res)=>{
+const createOrder = async(req,res)=>{
     try{
         const user = req.user 
         const {orderedProduct, address} = req.body
         const findUser = await User.findById(user.id);
-        // if(!findUser){
-        //     return getResponse(res,400,"user not exist")
-        // }
+        console.log(findUser.cart)
+        res.json(findUser.cart)
 
-        await findUser.order.unshift({orderedProduct : [...orderedProduct] , address : address});
-        findUser.cart = []
-        await findUser.save(async (err,docs)=>{
-            if(err)throw err;
-            const populatedData = await docs.populate("order.orderedProduct")
-            getResponse(res,200,"Order updated",populatedData.order)
-        })
+        
+     
+        // await findUser.order.unshift({orderedProducts : [...orderedProduct] , address : address , total : 0});
+        // findUser.cart = []
+        // await findUser.save(async (err,docs)=>{
+        //     if(err)throw err;
+        //     const populatedData = await docs.populate("order.orderedProduct")
+        //     getResponse(res,200,"Order updated",populatedData.order)
+        // })
 
         
     }catch(err){
@@ -366,9 +324,7 @@ const cancelOrder = async(req,res)=>{
         const orderId = req.orderId
         const findUser = await User.findById(user.id);
         
-        // if(!findUser){
-        //     return getResponse(res,400,"user not exist")
-        // }
+   
         const findOrder = await findUser.order.find(({_id})=>_id.toHexString() === orderId)
         if(!findOrder){
             return getResponse(res,400,"Order not available")
@@ -402,7 +358,7 @@ const userAction = {
     addAddress,
     removeAddress,
     updateAddress,
-    addOrder,
+    createOrder,
     cancelOrder
 
 

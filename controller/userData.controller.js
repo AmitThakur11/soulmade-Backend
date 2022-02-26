@@ -4,7 +4,7 @@ const razorpay = require("razorpay");
 const shortid = require("shortid");
 const { extend } = require("lodash");
 
-const getResponse = require("./utils");
+const {getResponse} = require("./utils");
 
 var instance = new razorpay({
   key_id: "rzp_test_vZaorXyCcQmPq5",
@@ -15,7 +15,6 @@ const getUser = async (req, res) => {
   try {
     const user = req.user;
     const findUser = await User.findById(user.id, { password: 0 });
-
     if (!findUser) {
       return getResponse(res, 400, "user not exist");
     }
@@ -28,6 +27,23 @@ const getUser = async (req, res) => {
     getResponse(res, 500, error.message);
   }
 };
+
+const getUserProfile = async(req,res)=>{
+  try{  
+  const {userId} = req.params;
+  const userDetails =await User.findById(userId,{password : 0});
+  const userProducts = await Product.find({seller : userId});
+  
+  
+  getResponse(res,200,"Profile fetched" , {username : userDetails.username , products : userProducts})
+
+  }catch(err){
+    getResponse(res,500,err.message)
+  }
+
+}
+
+
 const getWishlist = async (req, res) => {
   try {
     const user = req.user;
@@ -375,6 +391,7 @@ const cancelOrder = async (req, res) => {
 
 const userAction = {
   getUser,
+  getUserProfile,
   getWishlist,
   addToWishlist,
   removeFromWishlist,

@@ -3,10 +3,14 @@ const app = require("express");
 const authVerify = require("../middleware/auth.middleware");
 const userAction = require("../controller/userData.controller");
 const eval_param = require("../middleware/evalParam.middleware");
+
 router.use(authVerify);
 
 router.get("/userinfo", userAction.getUser);
 router.get("/wishlist", userAction.getWishlist);
+router.get("/:userId/profile" , userAction.getUserProfile);
+
+
 
 router.param("product_id", eval_param.product_param);
 

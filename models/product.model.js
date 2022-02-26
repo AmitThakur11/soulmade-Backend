@@ -38,6 +38,10 @@ const productSchema = new mongoose.Schema({
     required: true,
   },
   brand: String,
+  seller : {
+    type: mongoose.Schema.Types.ObjectId,
+    red : "User"
+  },
   features: [
     {
       type: String,

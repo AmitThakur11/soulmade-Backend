@@ -1,5 +1,5 @@
 const Product = require("../models/product.model");
-const {getResponse,cloudinary} = require("./utils")
+const {getResponse} = require("./utils")
 const getProduct = async (req, res) => {
   try {
     const product = await Product.find({});
@@ -25,11 +25,8 @@ const addProduct = async (req, res) => {
   try {
     const user = req.user;
     let  product = req.body;
-    console.log(product)
-    let upload =  await cloudinary.uploader.upload(product.img,{
-      upload_preset : "z0t3ezb4"
-    })
-    const updateProduct = {...product, seller : user.id , img  : upload.url}
+   
+    const updateProduct = {...product, seller : user.id}
 
     const newProduct = await new Product(updateProduct);
     await newProduct.save((err, docs) => {

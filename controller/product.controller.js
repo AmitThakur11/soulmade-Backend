@@ -34,7 +34,7 @@ const addProduct = async (req, res) => {
       res.status(200).json({
         success: true,
         msg: "Product added",
-        data : updateProduct
+        data : newProduct
       });
     });
   } catch (error) {

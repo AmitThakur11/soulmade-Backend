@@ -30,18 +30,16 @@ const addProduct = async (req, res) => {
       upload_preset : "z0t3ezb4"
     })
     const updateProduct = {...product, seller : user.id , img  : upload.url}
-    
-    console.log(updateProduct);
-    res.json(updateProduct)
-    
-    // const newProduct = await new Product(product);
-    // await newProduct.save((err, docs) => {
-    //   if (err) throw err;
-    //   res.status(200).json({
-    //     success: true,
-    //     msg: "Product added",
-    //   });
-    // });
+
+    const newProduct = await new Product(updateProduct);
+    await newProduct.save((err, docs) => {
+      if (err) throw err;
+      res.status(200).json({
+        success: true,
+        msg: "Product added",
+        data : updateProduct
+      });
+    });
   } catch (error) {
     res.status(500).json({
       success: false,

@@ -48,7 +48,7 @@ const addProduct = async (req, res) => {
 const editProduct = async (req, res) => {
   try {
     const user = req.user;
-    const { editedData } = req.body;
+    const  editedData = req.body;
     const { productId } = req.params;
 
     console.log(productId);
